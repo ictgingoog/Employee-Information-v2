@@ -62,10 +62,10 @@
             <span class="info-box-icon bg-gradient-primary elevation-1"><i class="fas fa-user-injured"></i></span>
 
             <div class="info-box-content">
-            <span class="info-box-text">Patients</span>
+            <span class="info-box-text">Employee</span>
             <span class="info-box-number text-right">
                 <?php 
-                    echo $conn->query("SELECT * FROM `patient_list`")->num_rows;
+                    echo $conn->query("SELECT * FROM `employee_list`")->num_rows;
                 ?>
             </span>
             </div>

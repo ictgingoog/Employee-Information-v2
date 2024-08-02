@@ -32,7 +32,7 @@
                       </a>
                     </li>
                     <li class="nav-item dropdown">
-                      <a href="<?php echo base_url ?>admin/?page=employees" class="nav-link nav-patients">
+                      <a href="<?php echo base_url ?>admin/?page=employee" class="nav-link nav-patients">
                         <i class="nav-icon fas fa-user-injured"></i>
                         <p>
                           Employee List

@@ -15,9 +15,9 @@
 </style>
 <div class="card card-outline card-primary">
 	<div class="card-header">
-		<h3 class="card-title">List of Patients</h3>
+		<h3 class="card-title">List of Employee</h3>
 		<div class="card-tools">
-			<a href="javascript:void(0)" id="create_new" class="btn btn-flat btn-sm btn-primary"><span class="fas fa-plus"></span>  Add New Patient</a>
+			<a href="javascript:void(0)" id="create_new" class="btn btn-flat btn-sm btn-primary"><span class="fas fa-plus"></span>  Add New Employee</a>
 		</div>
 	</div>
 	<div class="card-body">
@@ -36,14 +36,14 @@
 						<th>#</th>
 						<th>Date Added</th>
 						<th>Code</th>
-						<th>Patient Name</th>
+						<th>employee Name</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php 
 						$i = 1;
-						$qry = $conn->query("SELECT * from `patient_list` where delete_flag = 0 order by fullname asc ");
+						$qry = $conn->query("SELECT * from `employee_list` where delete_flag = 0 order by fullname asc ");
 						while($row = $qry->fetch_assoc()):
 					?>
 						<tr>
@@ -57,7 +57,7 @@
 				                    <span class="sr-only">Toggle Dropdown</span>
 				                  </button>
 				                  <div class="dropdown-menu" role="menu">
-								  	<a class="dropdown-item edit_data" href="./?page=patients/view_patient&id=<?= $row['id'] ?>" ><span class="fa fa-eye text-dark"></span> View Records</a>
+								  	<a class="dropdown-item edit_data" href="./?page=employees/view_employee&id=<?= $row['id'] ?>" ><span class="fa fa-eye text-dark"></span> View Records</a>
 									<div class="dropdown-divider"></div>
 				                    <a class="dropdown-item edit_data" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>"><span class="fa fa-edit text-dark"></span> Edit</a>
 									<div class="dropdown-divider"></div>
@@ -75,21 +75,21 @@
 <script>
 	$(document).ready(function(){
 		$('.delete_data').click(function(){
-			_conf("Are you sure to delete this user permanently?","delete_patient",[$(this).attr('data-id')])
+			_conf("Are you sure to delete this user permanently?","delete_employee",[$(this).attr('data-id')])
 		})
 		$('#create_new').click(function(){
-			uni_modal("Add New patient Details","patients/manage_patient.php",'mid-large')
+			uni_modal("Add New employee Details","employee/manage_employee.php",'mid-large')
 		})
 		$('.edit_data').click(function(){
-			uni_modal("Update patient Details","patients/manage_patient.php?id="+$(this).attr('data-id'),'mid-large')
+			uni_modal("Update employee Details","employee/manage_employee.php?id="+$(this).attr('data-id'),'mid-large')
 		})
 		$('.table td,.table th').addClass('py-1 px-2 align-middle')
 		$('.table').dataTable();
 	})
-	function delete_patient($id){
+	function delete_employee($id){
 		start_loader();
 		$.ajax({
-			url:_base_url_+"classes/Master.php?f=delete_patient",
+			url:_base_url_+"classes/Master.php?f=delete_employee",
 			method:"POST",
 			data:{id: $id},
 			dataType:"json",
