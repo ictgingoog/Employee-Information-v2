@@ -226,12 +226,12 @@ Class Master extends DBConnection {
 		}
 		return json_encode($resp);
 	}
-	function save_patient(){
+	function save_employee(){
 		if(empty($_POST['id'])){
 			$prefix = "PA-".(date('Ym'));
 			$code = sprintf("%'.04d",1);
 			while(true){
-				$check = $this->conn->query("SELECT * FROM `patient_list` where code = '{$prefix}{$code}'")->num_rows;
+				$check = $this->conn->query("SELECT * FROM `employee_list` where code = '{$prefix}{$code}'")->num_rows;
 				if($check > 0){
 					$code = sprintf("%'.04d",ceil($code)+ 1);
 				}else{
@@ -252,9 +252,9 @@ Class Master extends DBConnection {
 			}
 		}
 		if(empty($id)){
-			$sql = "INSERT INTO `patient_list` set {$data} ";
+			$sql = "INSERT INTO `employee_list` set {$data} ";
 		}else{
-			$sql = "UPDATE `patient_list` set {$data} where id = '{$id}' ";
+			$sql = "UPDATE `employee_list` set {$data} where id = '{$id}' ";
 		}
 		$save = $this->conn->query($sql);
 		if($save){
@@ -262,9 +262,9 @@ Class Master extends DBConnection {
 			$resp['pid'] = $pid;
 			$resp['status'] = 'success';
 			if(empty($id))
-				$resp['msg'] = "Patient Details has successfully added.";
+				$resp['msg'] = "employee Details has successfully added.";
 			else
-				$resp['msg'] = "Patient Details has been updated successfully.";
+				$resp['msg'] = "employee Details has been updated successfully.";
 			$data = "";
 			foreach($_POST as $k =>$v){
 				if(!in_array($k,array('id','fullname','code','status','delete_flag'))){
@@ -276,8 +276,8 @@ Class Master extends DBConnection {
 			}
 			// echo $data;exit;
 			if(!empty($data)){
-				$this->conn->query("DELETE FROM `patient_details` where patient_id = '{$pid}'");
-				$sql2 = "INSERT INTO `patient_details` (`patient_id`, `meta_field`, `meta_value`) VALUES {$data}";
+				$this->conn->query("DELETE FROM `employee_details` where employee_id = '{$pid}'");
+				$sql2 = "INSERT INTO `employee_details` (`employee_id`, `meta_field`, `meta_value`) VALUES {$data}";
 				$save2 = $this->conn->query($sql2);
 				if(!$sql2){
 					$resp['status'] = 'failed';
@@ -294,12 +294,12 @@ Class Master extends DBConnection {
 		$this->settings->set_flashdata('success',$resp['msg']);
 		return json_encode($resp);
 	}
-	function delete_patient(){
+	function delete_employee(){
 		extract($_POST);
-		$del = $this->conn->query("UPDATE `patient_list` set delete_flag = 1 where id = '{$id}'");
+		$del = $this->conn->query("UPDATE `employee_list` set delete_flag = 1 where id = '{$id}'");
 		if($del){
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',"Patient Details has been deleted successfully.");
+			$this->settings->set_flashdata('success',"employee Details has been deleted successfully.");
 
 		}else{
 			$resp['status'] = 'failed';
@@ -307,7 +307,7 @@ Class Master extends DBConnection {
 		}
 		return json_encode($resp);
 	}
-	function save_patient_history(){
+	function save_employee_history(){
 		extract($_POST);
 		$data = "";
 		foreach($_POST as $k =>$v){
@@ -319,9 +319,9 @@ Class Master extends DBConnection {
 			}
 		}
 		if(empty($id)){
-			$sql = "INSERT INTO `patient_history` set {$data} ";
+			$sql = "INSERT INTO `employee_history` set {$data} ";
 		}else{
-			$sql = "UPDATE `patient_history` set {$data} where id = '{$id}' ";
+			$sql = "UPDATE `employee_history` set {$data} where id = '{$id}' ";
 		}
 		
 		$save = $this->conn->query($sql);
@@ -329,9 +329,9 @@ Class Master extends DBConnection {
 			$rid = !empty($id) ? $id : $this->conn->insert_id;
 			$resp['status'] = 'success';
 			if(empty($id))
-				$resp['msg'] = "Patient Record Details has successfully added.";
+				$resp['msg'] = "employee Record Details has successfully added.";
 			else
-				$resp['msg'] = "Patient Record Details has been updated successfully.";
+				$resp['msg'] = "employee Record Details has been updated successfully.";
 		}else{
 			$resp['status'] = 'failed';
 			$resp['msg'] = "An error occured.";
@@ -341,12 +341,12 @@ Class Master extends DBConnection {
 		$this->settings->set_flashdata('success',$resp['msg']);
 		return json_encode($resp);
 	}
-	function delete_patient_history(){
+	function delete_employee_history(){
 		extract($_POST);
-		$del = $this->conn->query("DELETE FROM `patient_history` where id = '{$id}'");
+		$del = $this->conn->query("DELETE FROM `employee_history` where id = '{$id}'");
 		if($del){
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',"Patient Record Details has been deleted successfully.");
+			$this->settings->set_flashdata('success',"employee Record Details has been deleted successfully.");
 
 		}else{
 			$resp['status'] = 'failed';
@@ -354,7 +354,7 @@ Class Master extends DBConnection {
 		}
 		return json_encode($resp);
 	}
-	function save_patient_admission(){
+	function save_employee_admission(){
 		if(empty($_POST['date_discharged'])){
 			$_POST['date_discharged'] = NULL;
 			$_POST['status'] = 0;
@@ -382,9 +382,9 @@ Class Master extends DBConnection {
 			$rid = !empty($id) ? $id : $this->conn->insert_id;
 			$resp['status'] = 'success';
 			if(empty($id))
-				$resp['msg'] = "Patient Admission Record has successfully added.";
+				$resp['msg'] = "employee Admission Record has successfully added.";
 			else
-				$resp['msg'] = "Patient Admission Record has been updated successfully.";
+				$resp['msg'] = "employee Admission Record has been updated successfully.";
 		}else{
 			$resp['status'] = 'failed';
 			$resp['msg'] = "An error occured.";
@@ -394,12 +394,12 @@ Class Master extends DBConnection {
 		$this->settings->set_flashdata('success',$resp['msg']);
 		return json_encode($resp);
 	}
-	function delete_patient_admission(){
+	function delete_employee_admission(){
 		extract($_POST);
 		$del = $this->conn->query("DELETE FROM `admission_history` where id = '{$id}'");
 		if($del){
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',"Patient Admission Record has been deleted successfully.");
+			$this->settings->set_flashdata('success',"employee Admission Record has been deleted successfully.");
 
 		}else{
 			$resp['status'] = 'failed';
@@ -437,23 +437,23 @@ switch ($action) {
 	case 'delete_doctor':
 		echo $Master->delete_doctor();
 	break;
-	case 'save_patient':
-		echo $Master->save_patient();
+	case 'save_employee':
+		echo $Master->save_employee();
 	break;
-	case 'delete_patient':
-		echo $Master->delete_patient();
+	case 'delete_employee':
+		echo $Master->delete_employee();
 	break;
-	case 'save_patient_history':
-		echo $Master->save_patient_history();
+	case 'save_employee_history':
+		echo $Master->save_employee_history();
 	break;
-	case 'delete_patient_history':
-		echo $Master->delete_patient_history();
+	case 'delete_employee_history':
+		echo $Master->delete_employee_history();
 	break;
-	case 'save_patient_admission':
-		echo $Master->save_patient_admission();
+	case 'save_employee_admission':
+		echo $Master->save_employee_admission();
 	break;
-	case 'delete_patient_admission':
-		echo $Master->delete_patient_admission();
+	case 'delete_employee_admission':
+		echo $Master->delete_employee_admission();
 	break;
 	default:
 		// echo $sysset->index();
